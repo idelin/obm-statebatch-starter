@@ -1,0 +1,64 @@
+{
+  "spec": {
+    "states": [
+      {
+        "id": "job",
+        "parent": null,
+        "data": {
+          "count": {
+            "type": "int",
+            "default": 0
+          }
+        }
+      },
+      {
+        "id": "queued",
+        "parent": "job",
+        "data": {}
+      },
+      {
+        "id": "running",
+        "parent": "job",
+        "data": {
+          "items": {
+            "type": "json",
+            "default": []
+          }
+        }
+      },
+      {
+        "id": "health",
+        "parent": null,
+        "data": {
+          "ok": {
+            "type": "bool",
+            "default": true
+          }
+        }
+      }
+    ],
+    "initial": {
+      "job": "queued",
+      "health": "health"
+    }
+  },
+  "events": [
+    {
+      "region": "job",
+      "target": "running",
+      "guards": [
+        {
+          "key": "count",
+          "equals": 0
+        }
+      ],
+      "writes": [
+        {
+          "key": "count",
+          "value": 1
+        }
+      ]
+    }
+  ],
+  "expected_version": 0
+}
